@@ -6,6 +6,8 @@
 #include <string>
 #include <set>
 
+#include <iostream>
+
 #ifndef GAMEMODEL_H
 #define GAMEMODEL_H
 
@@ -41,6 +43,10 @@ class GameModel
 
     public:
         GameModel(int x, int y, std::function<void(std::vector<int>&, int, int)> generateMap);
+
+        // There should only be one game model, we don't want to allow it to be copied
+        GameModel(const GameModel& gameModel) = delete;
+
         virtual ~GameModel();
         const std::vector<int>& getMap();
         const std::vector<PlayerPosition>& getPlayerPositions();

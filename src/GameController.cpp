@@ -5,7 +5,8 @@
 #include <cmath>
 
 
-GameController::GameController(const std::vector<EnemyAgent> agents, std::shared_ptr<GameModel> gameModel) : agents(agents) , gameModel(std::move(gameModel)) {
+GameController::GameController(const std::vector<EnemyAgent> ag, std::shared_ptr<GameModel> gM) : agents(ag), gameModel(gM) {
+    std::cout<<"Created game controller\n";
     gameModel->getMapDimensions(mapRows, mapCols);
 
     std::cout<<"Retrieved rows "<< mapRows << " and cols " << mapCols << " from game model " << "\n";
@@ -21,7 +22,7 @@ GameController::GameController(const std::vector<EnemyAgent> agents, std::shared
     for (std::vector<EnemyAgent>::const_iterator enemyAgent = agents.begin(); enemyAgent != agents.end(); enemyAgent++ ) {
         int startingXPos = rand() % rowRemainder;
         int startingYPos = rand() % mapCols;
-        std::cout<<"Spawning Enemy player " << enemyAgent.getUniqueId() << "Spawning at (" << startingXPos << "," << startingYPos << ")\n"
+        std::cout<<"Spawning Enemy player " << enemyAgent->getUniqueId() << "Spawning at (" << startingXPos << "," << startingYPos << ")\n";
     }
 }
 

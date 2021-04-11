@@ -19,18 +19,23 @@ int main() {
 	const int rows = 10;
 	const int cols = 10;
 
-	GameModel game(rows, cols, easyMapGenerator());
-	std::shared_ptr<GameModel> gameModelPtr = std::make_shared<GameModel>(game);
-	game.printMap();
+	
+	std::shared_ptr<GameModel> gameModelPtr = std::make_shared<GameModel>(rows, cols, easyMapGenerator());
+	// game.printMap();
 
 	std::vector<EnemyAgent> enemyAgents;
 	// Create the agents
 	for (int i=0; i<2; i++) {
-		EnemyAgent enemyAgent(gameModelPtr);
+		EnemyAgent enemyAgent;
 		enemyAgents.push_back(enemyAgent);
 	}	
 
+    std::cout<<"Use count = " <<gameModelPtr.use_count()<<"\n";
+
 	GameController gameController(enemyAgents, gameModelPtr);
+
+	    std::cout<<"Use count = " <<gameModelPtr.use_count()<<"\n";
+
 	return 0;
 }
 

@@ -96,5 +96,5 @@ int GameModel::getValue(int row, int col) {
 
 void GameModel::getMapDimensions(int& r, int& c) {
     r = rows;
-    c = cols
+    c = cols;
 }

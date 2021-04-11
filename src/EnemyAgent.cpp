@@ -3,7 +3,7 @@
 #include <iostream>
 #include <utility>
 
-EnemyAgent::EnemyAgent(std::shared_ptr<GameModel> gameModel) : defaultMove(RIGHT), uniqueId(rand()), gameModel(std::move(gameModel)){
+EnemyAgent::EnemyAgent() : defaultMove(RIGHT), uniqueId(rand()) {
     std::cout<<"Created an enemy agent with id " << uniqueId << "\n";
     this->agentType = AgentType::ENEMY;
 }
@@ -30,7 +30,7 @@ int EnemyAgent::getNextMove() {
     }
 }
 
-int EnemyAgent::getUniqueId() const{
+int EnemyAgent::getUniqueId() const {
     return uniqueId;
 }
 

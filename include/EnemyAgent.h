@@ -13,13 +13,12 @@ class EnemyAgent : public Agent
         const int defaultMove;
         std::queue<int> moves;
         const int uniqueId;
-        std::shared_ptr<GameModel> gameModel;
 
         int xPos;
         int yPos;
 
     public:
-        EnemyAgent(std::shared_ptr<GameModel>);
+        EnemyAgent();
         virtual ~EnemyAgent();
         AgentType getAgentType();
         int getUniqueId() const;
