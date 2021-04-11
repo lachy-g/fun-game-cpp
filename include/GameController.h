@@ -15,7 +15,7 @@ class GameController
         int mapCols;
 
     public:
-        GameController(const std::vector<EnemyAgent>, std::shared_ptr<GameModel> gameModel);
+        GameController(std::vector<EnemyAgent>, std::shared_ptr<GameModel> gameModel);
         void startGame();
         virtual ~GameController();
         void printAgents();

@@ -38,10 +38,9 @@ const std::vector<int>& GameModel::getMap() {
     return map;
 }
 
-const std::vector<PlayerPosition>& GameModel::getPlayerPositions() {
+std::shared_ptr<std::vector<PlayerPosition>> GameModel::getPlayerPositions() {
     return playerPositions;
 }
-
 
 void GameModel::printMap() {
     using std::cout;

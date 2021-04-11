@@ -14,12 +14,12 @@
 std::function<void(std::vector<int>&, int, int)> easyMapGenerator();
 std::function<void(std::vector<int>&, int, int)> hardMapGenerator();
 
+void doSomething(std::vector<int>* vect);
 int main() {
 	srand((unsigned) time(0));
 	const int rows = 10;
 	const int cols = 10;
 
-	
 	std::shared_ptr<GameModel> gameModelPtr = std::make_shared<GameModel>(rows, cols, easyMapGenerator());
 	// game.printMap();
 
@@ -30,13 +30,23 @@ int main() {
 		enemyAgents.push_back(enemyAgent);
 	}	
 
-    std::cout<<"Use count = " <<gameModelPtr.use_count()<<"\n";
-
 	GameController gameController(enemyAgents, gameModelPtr);
 
-	    std::cout<<"Use count = " <<gameModelPtr.use_count()<<"\n";
+	std::vector<int> temp{ 1 , 5, -3};
 
+	doSomething(&temp);
+	for (auto& it : temp) {
+		std::cout<<it<<"\n";
+	}
 	return 0;
+}
+
+void doSomething(std::vector<int>* vect)
+{
+	for (auto& it : *vect) {
+		std::cout<<it<<"\n";
+	}
+	delete vect;
 }
 
 

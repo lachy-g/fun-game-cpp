@@ -19,8 +19,11 @@ AgentType EnemyAgent::getAgentType() {
 }
 
 // Game functions
-
 int EnemyAgent::getNextMove() {
+    if (xPos == UNINITAILISED_POSITION || yPos == UNINITAILISED_POSITION) {
+        std::cout<<"Warning, agent has not been initailised, please provide initial position before getting moves\n";
+    }
+
     if (moves.empty()) {
         return defaultMove;
     } else {

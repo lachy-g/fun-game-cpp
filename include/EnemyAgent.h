@@ -7,6 +7,8 @@
 #ifndef ENEMYAGENT_H
 #define ENEMYAGENT_H
 
+#define UNINITAILISED_POSITION -1
+
 class EnemyAgent : public Agent
 {
     private:
@@ -14,8 +16,9 @@ class EnemyAgent : public Agent
         std::queue<int> moves;
         const int uniqueId;
 
-        int xPos;
-        int yPos;
+        // Start position is provided to agent
+        int xPos = UNINITAILISED_POSITION;
+        int yPos = UNINITAILISED_POSITION;
 
     public:
         EnemyAgent();

@@ -19,10 +19,11 @@ GameController::GameController(const std::vector<EnemyAgent> ag, std::shared_ptr
     const int rowRemainder = std::floor( mapRows / 2 ) - 1;
     std::cout<<"Spawing enemy players above or in row " << rowRemainder << "\n";
 
-    for (std::vector<EnemyAgent>::const_iterator enemyAgent = agents.begin(); enemyAgent != agents.end(); enemyAgent++ ) {
+    for (std::vector<EnemyAgent>::iterator enemyAgent = agents.begin(); enemyAgent != agents.end(); enemyAgent++ ) {
         int startingXPos = rand() % rowRemainder;
         int startingYPos = rand() % mapCols;
         std::cout<<"Spawning Enemy player " << enemyAgent->getUniqueId() << "Spawning at (" << startingXPos << "," << startingYPos << ")\n";
+        enemyAgent->updatePosition(startingXPos, startingYPos);
     }
 }
 

@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <set>
+#include <memory>
 
 #include <iostream>
 
@@ -31,7 +32,7 @@ class GameModel
         const int size;
         
         std::vector<int> map;
-        std::vector<PlayerPosition> playerPositions;
+        std::shared_ptr<std::vector<PlayerPosition>> playerPositions;
 
         std::string rowBounds;
         std::string colBounds; 
@@ -49,7 +50,7 @@ class GameModel
 
         virtual ~GameModel();
         const std::vector<int>& getMap();
-        const std::vector<PlayerPosition>& getPlayerPositions();
+        std::vector<PlayerPosition>& getPlayerPositions();
         void printMap();
         void getMapDimensions(int&, int&);
 };
