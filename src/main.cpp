@@ -7,31 +7,46 @@
 #include <memory>
 #include <utility>
 
-#include "EnemyAgent.h"
-#include "GameModel.h"
-#include "GameController.h"
+#include "..\include\EnemyAgent.h"
+#include "..\include\GameModel.h"
+#include "..\include\GameController.h"
 
 std::function<void(std::vector<int>&, int, int)> easyMapGenerator();
 std::function<void(std::vector<int>&, int, int)> hardMapGenerator();
 
+void doSomething(std::vector<int>* vect);
 int main() {
 	srand((unsigned) time(0));
 	const int rows = 10;
 	const int cols = 10;
 
-	GameModel game(rows, cols, easyMapGenerator());
-	std::shared_ptr<GameModel> gameModelPtr = std::make_shared<GameModel>(game);
+	std::shared_ptr<GameModel> gameModelPtr = std::make_shared<GameModel>(rows, cols, easyMapGenerator());
 	// game.printMap();
 
 	std::vector<EnemyAgent> enemyAgents;
 	// Create the agents
 	for (int i=0; i<2; i++) {
-		EnemyAgent enemyAgent(gameModelPtr);
+		EnemyAgent enemyAgent;
 		enemyAgents.push_back(enemyAgent);
 	}	
 
 	GameController gameController(enemyAgents, gameModelPtr);
+
+	std::vector<int> temp{ 1 , 5, -3};
+
+	doSomething(&temp);
+	for (auto& it : temp) {
+		std::cout<<it<<"\n";
+	}
 	return 0;
+}
+
+void doSomething(std::vector<int>* vect)
+{
+	for (auto& it : *vect) {
+		std::cout<<it<<"\n";
+	}
+	delete vect;
 }
 
 

@@ -1,9 +1,9 @@
-#include "EnemyAgent.h"
+#include "..\include\EnemyAgent.h"
 #include <stdlib.h>
 #include <iostream>
 #include <utility>
 
-EnemyAgent::EnemyAgent(std::shared_ptr<GameModel> gameModel) : defaultMove(RIGHT), uniqueId(rand()), gameModel(std::move(gameModel)){
+EnemyAgent::EnemyAgent() : defaultMove(RIGHT), uniqueId(rand()) {
     std::cout<<"Created an enemy agent with id " << uniqueId << "\n";
     this->agentType = AgentType::ENEMY;
 }
@@ -19,8 +19,11 @@ AgentType EnemyAgent::getAgentType() {
 }
 
 // Game functions
-
 int EnemyAgent::getNextMove() {
+    if (xPos == UNINITAILISED_POSITION || yPos == UNINITAILISED_POSITION) {
+        std::cout<<"Warning, agent has not been initailised, please provide initial position before getting moves\n";
+    }
+
     if (moves.empty()) {
         return defaultMove;
     } else {
@@ -30,7 +33,7 @@ int EnemyAgent::getNextMove() {
     }
 }
 
-int EnemyAgent::getUniqueId() const{
+int EnemyAgent::getUniqueId() const {
     return uniqueId;
 }
 

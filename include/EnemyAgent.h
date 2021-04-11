@@ -7,19 +7,21 @@
 #ifndef ENEMYAGENT_H
 #define ENEMYAGENT_H
 
+#define UNINITAILISED_POSITION -1
+
 class EnemyAgent : public Agent
 {
     private:
         const int defaultMove;
         std::queue<int> moves;
         const int uniqueId;
-        std::shared_ptr<GameModel> gameModel;
 
-        int xPos;
-        int yPos;
+        // Start position is provided to agent
+        int xPos = UNINITAILISED_POSITION;
+        int yPos = UNINITAILISED_POSITION;
 
     public:
-        EnemyAgent(std::shared_ptr<GameModel>);
+        EnemyAgent();
         virtual ~EnemyAgent();
         AgentType getAgentType();
         int getUniqueId() const;

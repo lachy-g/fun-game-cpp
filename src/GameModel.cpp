@@ -1,5 +1,4 @@
-#include "GameModel.h"
-#include "GameNode.h"
+#include "..\include\GameModel.h"
 
 #include <iostream>
 #include <exception>
@@ -39,10 +38,9 @@ const std::vector<int>& GameModel::getMap() {
     return map;
 }
 
-const std::vector<PlayerPosition>& GameModel::getPlayerPositions() {
+std::shared_ptr<std::vector<PlayerPosition>> GameModel::getPlayerPositions() {
     return playerPositions;
 }
-
 
 void GameModel::printMap() {
     using std::cout;
@@ -93,4 +91,9 @@ int GameModel::getValue(int row, int col) {
      } else {
          return map.at((row * cols) + col);
      }
+}
+
+void GameModel::getMapDimensions(int& r, int& c) {
+    r = rows;
+    c = cols;
 }
