@@ -5,7 +5,7 @@
 #include <cmath>
 
 
-GameController::GameController(const std::vector<EnemyAgent> ag, std::shared_ptr<GameModel> gM) : agents(ag), gameModel(gM) {
+GameController::GameController(const std::vector<EnemyAgent> ag, std::shared_ptr<GameModel> gM) : agents(ag), gameModel(std::move(gM)) {
     std::cout<<"Created game controller\n";
     gameModel->getMapDimensions(mapRows, mapCols);
 
