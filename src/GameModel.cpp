@@ -1,5 +1,4 @@
-#include "GameModel.h"
-#include "GameNode.h"
+#include "..\include\GameModel.h"
 
 #include <iostream>
 #include <exception>

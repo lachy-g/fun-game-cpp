@@ -7,9 +7,9 @@
 #include <memory>
 #include <utility>
 
-#include "EnemyAgent.h"
-#include "GameModel.h"
-#include "GameController.h"
+#include "..\include\EnemyAgent.h"
+#include "..\include\GameModel.h"
+#include "..\include\GameController.h"
 
 std::function<void(std::vector<int>&, int, int)> easyMapGenerator();
 std::function<void(std::vector<int>&, int, int)> hardMapGenerator();
@@ -21,7 +21,7 @@ int main() {
 
 	GameModel game(rows, cols, easyMapGenerator());
 	std::shared_ptr<GameModel> gameModelPtr = std::make_shared<GameModel>(game);
-	// game.printMap();
+	game.printMap();
 
 	std::vector<EnemyAgent> enemyAgents;
 	// Create the agents
