@@ -50,7 +50,7 @@ class GameModel
 
         virtual ~GameModel();
         const std::vector<int>& getMap();
-        std::vector<PlayerPosition>& getPlayerPositions();
+        std::shared_ptr<std::vector<PlayerPosition>> getPlayerPositions();
         void printMap();
         void getMapDimensions(int&, int&);
 };
