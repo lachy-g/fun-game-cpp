@@ -93,3 +93,8 @@ int GameModel::getValue(int row, int col) {
          return map.at((row * cols) + col);
      }
 }
+
+void GameModel::getMapDimensions(int& r, int& c) {
+    r = rows;
+    c = cols
+}

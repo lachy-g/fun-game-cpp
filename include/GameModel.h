@@ -16,6 +16,11 @@ struct PlayerPosition
     AgentType agentType;
 };
 
+/**
+ * 2d Game model
+ * top left = (0,0). Bottom right = (rows-1, cols-1)
+ * stored in a 1d vector for performance, mapping to 2d done by set and getvalue
+ */ 
 class GameModel
 {
     private:
@@ -40,6 +45,7 @@ class GameModel
         const std::vector<int>& getMap();
         const std::vector<PlayerPosition>& getPlayerPositions();
         void printMap();
+        void getMapDimensions(int&, int&);
 };
 
 #endif
