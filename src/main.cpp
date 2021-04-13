@@ -20,7 +20,7 @@ int main() {
 	const int cols = 10;
 
 	
-	std::shared_ptr<GameModel> gameModelPtr = std::make_shared<GameModel>(rows, cols, easyMapGenerator());
+	std::unique_ptr<GameModel> gameModelPtr = std::make_unique<GameModel>(rows, cols, easyMapGenerator());
 	// game.printMap();
 
 	std::vector<EnemyAgent> enemyAgents;
@@ -30,7 +30,7 @@ int main() {
 		enemyAgents.push_back(enemyAgent);
 	}	
 
-	GameController gameController(enemyAgents, gameModelPtr);
+	GameController gameController(enemyAgents, std::move(gameModelPtr));
 
 	return 0;
 }
