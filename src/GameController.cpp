@@ -5,26 +5,38 @@
 #include <cmath>
 
 
-GameController::GameController(const std::vector<EnemyAgent> ag, std::shared_ptr<GameModel> gM) : agents(ag), gameModel(std::move(gM)) {
+GameController::GameController(std::vector<std::shared_ptr<EnemyAgent>> enemyAgents, std::unique_ptr<GameModel> gameModel) : gameModel(std::move(gameModel)) {
     std::cout<<"Created game controller\n";
-    gameModel->getMapDimensions(mapRows, mapCols);
+    GameController::gameModel->getMapDimensions(mapRows, mapCols);
+
+    // Copy across shared pointers to enemyAgents
+    for (auto enemyAgentPtr : enemyAgents) {
+        GameController::enemyAgents.push_back(std::move(enemyAgentPtr));
+    }
 
     std::cout<<"Retrieved rows "<< mapRows << " and cols " << mapCols << " from game model " << "\n";
+
     // Initialise player positions
     // GameController provides to the players their starting position and then notifies the model of this
     // Enemy players can start at any valid column in top half ( i.e in < rows / 2)
-    const std::vector<int> map = gameModel->getMap();
+    const std::vector<int> map = GameController::gameModel->getMap();
 
     // Ensure we handle both odd and even cases for row division to ensure enemy is not in bottow half
     const int rowRemainder = std::floor( mapRows / 2 ) - 1;
     std::cout<<"Spawing enemy players above or in row " << rowRemainder << "\n";
 
-    for (std::vector<EnemyAgent>::iterator enemyAgent = agents.begin(); enemyAgent != agents.end(); enemyAgent++ ) {
+    // TODO ensure spawn positions are valid I.E not lava && ensure they are unique.
+    for (auto& enemyAgentPtr : GameController::enemyAgents ) {
         int startingXPos = rand() % rowRemainder;
         int startingYPos = rand() % mapCols;
-        std::cout<<"Spawning Enemy player " << enemyAgent->getUniqueId() << "Spawning at (" << startingXPos << "," << startingYPos << ")\n";
-        enemyAgent->updatePosition(startingXPos, startingYPos);
+        std::cout<<"Spawning Enemy player " << enemyAgentPtr.get()->getUniqueId() << "Spawning at (" << startingXPos << "," << startingYPos << ")\n";
+        enemyAgentPtr.get()->updatePosition(startingXPos, startingYPos);
     }
+
+    GameController::gameModel.get()->provideInitialisedAgents(GameController::enemyAgents);
+
+    GameController::gameModel.get()->printMap();
+
 }
 
 GameController::~GameController() {
