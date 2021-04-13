@@ -1,5 +1,5 @@
 #include "GameNode.h"
-#include "Agent.h"
+#include "EnemyAgent.h"
 
 #include <functional> 
 #include <vector>
@@ -12,12 +12,6 @@
 #ifndef GAMEMODEL_H
 #define GAMEMODEL_H
 
-struct PlayerPosition
-{
-    int xPos;
-    int yPos;
-    AgentType agentType;
-};
 
 /**
  * 2d Game model
@@ -32,12 +26,14 @@ class GameModel
         const int size;
         
         std::vector<int> map;
-        std::shared_ptr<std::vector<PlayerPosition>> playerPositions;
 
         std::string rowBounds;
         std::string colBounds; 
 
         std::set<GameNode> available_game_nodes;
+
+        // Refernece to enemy agents //
+        std::vector<std::shared_ptr<EnemyAgent>> enemyAgents;
 
         void setValue(int row, int col, int val);
         int getValue(int row, int col);
@@ -50,9 +46,12 @@ class GameModel
 
         virtual ~GameModel();
         const std::vector<int>& getMap();
-        std::shared_ptr<std::vector<PlayerPosition>> getPlayerPositions();
         void printMap();
         void getMapDimensions(int&, int&);
+
+        // Used by GameController to provide initialised enemy agents
+        // Used at the start, or can be used to provide any additional agents created throughout the program life cycle...
+        void provideInitialisedAgents(std::vector<std::shared_ptr<EnemyAgent>> enemyAgents);
 };
 
 #endif

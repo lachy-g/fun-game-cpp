@@ -2,7 +2,6 @@
 #include <memory>
 
 #include "Agent.h"
-#include "GameModel.h"
 
 #ifndef ENEMYAGENT_H
 #define ENEMYAGENT_H
@@ -30,6 +29,11 @@ class EnemyAgent : public Agent
         void updatePosition(int, int);
         int getNextMove();
         void generateMoves(int);
+
+        /**
+         * Returns the current position this agent is in
+         */
+        void getCurrentPosition(int&, int&);
 };
 
 #endif

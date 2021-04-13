@@ -21,13 +21,11 @@ int main() {
 
 	
 	std::unique_ptr<GameModel> gameModelPtr = std::make_unique<GameModel>(rows, cols, easyMapGenerator());
-	// game.printMap();
-
-	std::vector<EnemyAgent> enemyAgents;
+	
+	std::vector<std::shared_ptr<EnemyAgent>> enemyAgents;
 	// Create the agents
 	for (int i=0; i<2; i++) {
-		EnemyAgent enemyAgent;
-		enemyAgents.push_back(enemyAgent);
+		enemyAgents.push_back(std::make_shared<EnemyAgent>());
 	}	
 
 	GameController gameController(enemyAgents, std::move(gameModelPtr));

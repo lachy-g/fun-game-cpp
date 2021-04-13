@@ -9,13 +9,13 @@
 class GameController
 {
     private:
-        std::vector<EnemyAgent> agents;
+        std::vector<std::shared_ptr<EnemyAgent>> enemyAgents;
         std::unique_ptr<GameModel> gameModel;
         int mapRows;
         int mapCols;
 
     public:
-        GameController(std::vector<EnemyAgent> agents, std::unique_ptr<GameModel> gameModel);
+        GameController(std::vector<std::shared_ptr<EnemyAgent>> enemyAgents, std::unique_ptr<GameModel> gameModel);
         void startGame();
         virtual ~GameController();
         void printAgents();

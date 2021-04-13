@@ -38,23 +38,38 @@ const std::vector<int>& GameModel::getMap() {
     return map;
 }
 
-std::shared_ptr<std::vector<PlayerPosition>> GameModel::getPlayerPositions() {
-    return playerPositions;
-}
-
 void GameModel::printMap() {
-    using std::cout;
-
     int line_counter = 0;
+
+    // Temporarily display enemy agents on map for debugging, later will need to improve this..
+    std::set<int> enemyAgentsPositions;
+    bool enemyAgentsProvided = !enemyAgents.empty();
+    if (enemyAgentsProvided) {
+        for (auto& enemyAgent : enemyAgents) {
+            int x, y;
+            enemyAgent.get()->getCurrentPosition(x, y);
+            // Map back to 1D
+            // TODO define static mapping functions
+            int oneDPosition = x * cols + y;
+            enemyAgentsPositions.insert(oneDPosition);
+        }
+    }
+
     for (int i=0;i<size; i++) {
-        int val = map[i];
 
-        std::set<GameNode>::iterator it = available_game_nodes.find(GameNode(val));
-
-        if (it == available_game_nodes.end()) {
-            std::cout<<"ERROR";
+        if (enemyAgentsPositions.count(i) == 1) {
+            std::cout<<"ENEMY";
         } else {
-            std::cout<< (*it).getName() << " : " << GameNode::mapConsequenceToString((*it).getConsequence());
+
+            int val = map[i];
+
+            std::set<GameNode>::iterator it = available_game_nodes.find(GameNode(val));
+
+            if (it == available_game_nodes.end()) {
+                std::cout<<"ERROR";
+            } else {
+                std::cout<< (*it).getName();
+            }
         }
 
         if (++line_counter == (cols)) {
@@ -97,3 +112,10 @@ void GameModel::getMapDimensions(int& r, int& c) {
     r = rows;
     c = cols;
 }
+
+void GameModel::provideInitialisedAgents(std::vector<std::shared_ptr<EnemyAgent>> enemyAgents) {
+    for (auto enemyAgentPtr : enemyAgents) {
+        GameModel::enemyAgents.push_back(std::move(enemyAgentPtr));
+    }
+}
+
