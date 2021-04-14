@@ -4,19 +4,13 @@
 #include <exception>
 #include <string>
 #include <sstream>
+#include <cmath>
 
 /**
  * Takes total rows and cols starting from 1
  */
-GameModel::GameModel(int x, int y, std::function<void(std::vector<int>&, int, int)> generateMap) : rows(x), cols(y), size(rows * cols) {
-    std::stringstream errorGenerationStream;
-    errorGenerationStream << "Row bounds between 0 and " << rows;
-    rowBounds = errorGenerationStream.str();
-    errorGenerationStream.str(std::string());
-
-    errorGenerationStream << "Col bounds between 0 and " << cols;
-    colBounds = errorGenerationStream.str();
-
+GameModel::GameModel(int rows, int cols, std::function<void(std::vector<int>&, int, int)> generateMap) : rows(rows), cols(cols), size(rows * cols) {
+   
     // Generate the game nodes
     for (int i=0; i<AVAILABLE_NODES; i++) {
         GameNode gameNode(i);
@@ -28,7 +22,7 @@ GameModel::GameModel(int x, int y, std::function<void(std::vector<int>&, int, in
         map.push_back(0);
     }
 
-    generateMap(map, rows, cols);
+    generateMap(map, GameModel::rows, GameModel::cols);
 }
 
 GameModel::~GameModel() {
@@ -48,10 +42,7 @@ void GameModel::printMap() {
         for (auto& enemyAgent : enemyAgents) {
             int x, y;
             enemyAgent.get()->getCurrentPosition(x, y);
-            // Map back to 1D
-            // TODO define static mapping functions
-            int oneDPosition = x * cols + y;
-            enemyAgentsPositions.insert(oneDPosition);
+            enemyAgentsPositions.insert(map2DTo1D(y, x));
         }
     }
 
@@ -85,27 +76,14 @@ void GameModel::printMap() {
  * Takes row, col at index starting at 0
  */
 void GameModel::setValue(int row, int col, int val) {
-     if (row == 0) {
-         map.at(col) = val;
-     } else if (col == 0) {
-         map.at(row * cols) = val;
-     } else {
-         int index = (row * cols) + col;
-         map.at(index) = val;
-     }
- }
+     map.at(map2DTo1D(row, col)) = val;
+}
 
  /**
  * Takes row, col at index starting at 0
  */       
 int GameModel::getValue(int row, int col) {
-    if (row == 0) {
-        return map.at(row);
-     } else if (col == 0) {
-        return map.at(row * cols);
-     } else {
-         return map.at((row * cols) + col);
-     }
+    return map.at(map2DTo1D(row, col));
 }
 
 void GameModel::getMapDimensions(int& r, int& c) {
@@ -117,5 +95,22 @@ void GameModel::provideInitialisedAgents(std::vector<std::shared_ptr<EnemyAgent>
     for (auto enemyAgentPtr : enemyAgents) {
         GameModel::enemyAgents.push_back(std::move(enemyAgentPtr));
     }
+}
+
+
+void GameModel::map1DTo2D(int oneDPos, int& row, int& col) {
+    if (oneDPos < cols) {
+        row = 0;
+        col = oneDPos;
+    } else {
+        // TODO
+        row = std::floor(oneDPos/cols);
+        col = oneDPos % cols;
+    }
+}
+        
+        
+int GameModel::map2DTo1D(int row, int col) {
+    return ((row * cols) + col);
 }
 
