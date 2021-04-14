@@ -1,4 +1,4 @@
-#include "..\include\GameController.h"
+#include "GameController.h"
 #include <iostream>
 #include <stdio.h>
 #include <utility>
