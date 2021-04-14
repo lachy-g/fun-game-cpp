@@ -14,8 +14,6 @@ class GameController
         int mapRows;
         int mapCols;
 
-        bool isEnemyPositionValid(int position);
-
     public:
         GameController(std::vector<std::shared_ptr<EnemyAgent>> enemyAgents, std::unique_ptr<GameModel> gameModel);
         void startGame();

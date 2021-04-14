@@ -14,7 +14,7 @@ GameModel::GameModel(int rows, int cols, std::function<void(std::vector<int>&, i
     // Generate the game nodes
     for (int i=0; i<AVAILABLE_NODES; i++) {
         GameNode gameNode(i);
-        available_game_nodes.insert(gameNode);
+        available_game_nodes.insert(std::make_pair(i, gameNode));
     }
 
     // Set the map to default values
@@ -52,14 +52,13 @@ void GameModel::printMap() {
             std::cout<<"ENEMY";
         } else {
 
-            int val = map[i];
 
-            std::set<GameNode>::iterator it = available_game_nodes.find(GameNode(val));
+            std::map<int, GameNode>::iterator it = available_game_nodes.find(map[i]);
 
             if (it == available_game_nodes.end()) {
                 std::cout<<"ERROR";
             } else {
-                std::cout<< (*it).getName();
+                std::cout<<it->second.getName();
             }
         }
 
@@ -112,5 +111,18 @@ void GameModel::map1DTo2D(int oneDPos, int& row, int& col) {
         
 int GameModel::map2DTo1D(int row, int col) {
     return ((row * cols) + col);
+}
+
+bool GameModel::isEnemyPositionValid(int xpos, int ypos) {
+    const int value = getValue(xpos, ypos);
+    std::map<int, GameNode>::iterator it = available_game_nodes.find(value);
+
+    if (it == available_game_nodes.end()) {
+        std::cout<<"ERROR, unexepected value at enemy new position ( " << xpos <<  " , " << ypos << ") however node value " << value << " at that position is not supported by avaiable game nodes";
+        return false;
+    } else {
+        const NodeConsequence nodeConsequence = it->second.getConsequence();
+        return nodeConsequence == NodeConsequence::CAN_MOVE;
+    }
 }
 

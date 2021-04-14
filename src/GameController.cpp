@@ -29,6 +29,13 @@ GameController::GameController(std::vector<std::shared_ptr<EnemyAgent>> enemyAge
     for (auto& enemyAgentPtr : GameController::enemyAgents ) {
         int startingXPos = rand() % mapCols;
         int startingYPos = rand() % rowRemainder;
+            
+        // TODO check enemy agent is not in that position
+        while (!gameModel->isEnemyPositionValid(startingXPos, startingYPos)) {
+            startingXPos = rand() % mapCols;
+            startingYPos = rand() % rowRemainder;
+        }
+
         std::cout<<"Spawning Enemy player " << enemyAgentPtr.get()->getUniqueId() << "Spawning at x,y = (" << startingXPos << "," << startingYPos << ")\n";
         enemyAgentPtr.get()->updatePosition(startingXPos, startingYPos);
     }
@@ -45,8 +52,4 @@ GameController::~GameController() {
 
 void GameController::printAgents() {
     
-}
-
-bool GameController::isEnemyPositionValid(int position) {
-    return true;
 }
