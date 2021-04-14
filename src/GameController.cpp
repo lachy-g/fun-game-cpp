@@ -1,4 +1,4 @@
-#include "..\include\GameController.h"
+#include "GameController.h"
 #include <iostream>
 #include <stdio.h>
 #include <utility>
@@ -27,9 +27,9 @@ GameController::GameController(std::vector<std::shared_ptr<EnemyAgent>> enemyAge
 
     // TODO ensure spawn positions are valid I.E not lava && ensure they are unique.
     for (auto& enemyAgentPtr : GameController::enemyAgents ) {
-        int startingXPos = rand() % rowRemainder;
-        int startingYPos = rand() % mapCols;
-        std::cout<<"Spawning Enemy player " << enemyAgentPtr.get()->getUniqueId() << "Spawning at (" << startingXPos << "," << startingYPos << ")\n";
+        int startingXPos = rand() % mapCols;
+        int startingYPos = rand() % rowRemainder;
+        std::cout<<"Spawning Enemy player " << enemyAgentPtr.get()->getUniqueId() << "Spawning at x,y = (" << startingXPos << "," << startingYPos << ")\n";
         enemyAgentPtr.get()->updatePosition(startingXPos, startingYPos);
     }
 
@@ -45,4 +45,8 @@ GameController::~GameController() {
 
 void GameController::printAgents() {
     
+}
+
+bool GameController::isEnemyPositionValid(int position) {
+    return true;
 }

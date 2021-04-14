@@ -15,6 +15,7 @@
 
 /**
  * 2d Game model
+ * X axis refers to vertical axis, Y axis refers to horizontal axis.
  * top left = (0,0). Bottom right = (rows-1, cols-1)
  * stored in a 1d vector for performance, mapping to 2d done by set and getvalue
  */ 
@@ -27,9 +28,6 @@ class GameModel
         
         std::vector<int> map;
 
-        std::string rowBounds;
-        std::string colBounds; 
-
         std::set<GameNode> available_game_nodes;
 
         // Refernece to enemy agents //
@@ -37,6 +35,12 @@ class GameModel
 
         void setValue(int row, int col, int val);
         int getValue(int row, int col);
+
+        // Used to map a 1D coordinate to its 2D representation
+        void map1DTo2D(int oneD, int& xPos, int& YPos);
+        
+        // Returns the 1D point corresponding to the row, col
+        int map2DTo1D(int row, int col);
 
     public:
         GameModel(int x, int y, std::function<void(std::vector<int>&, int, int)> generateMap);

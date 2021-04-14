@@ -16,6 +16,7 @@ class EnemyAgent : public Agent
         const int uniqueId;
 
         // Start position is provided to agent
+        // Xpos defines the horizontal axis i.e the column. Ypos defines the row
         int xPos = UNINITAILISED_POSITION;
         int yPos = UNINITAILISED_POSITION;
 
