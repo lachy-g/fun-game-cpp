@@ -11,6 +11,8 @@
 #include "../include/GameModel.h"
 #include "../include/GameController.h"
 
+#define STARTING_ENEMIES_DEFAULT 3
+
 std::function<void(std::vector<int>&, int, int)> easyMapGenerator();
 std::function<void(std::vector<int>&, int, int)> hardMapGenerator();
 
@@ -24,7 +26,7 @@ int main() {
 	
 	std::vector<std::shared_ptr<EnemyAgent>> enemyAgents;
 	// Create the agents
-	for (int i=0; i<2; i++) {
+	for (int i=0; i<STARTING_ENEMIES_DEFAULT; i++) {
 		enemyAgents.push_back(std::make_shared<EnemyAgent>());
 	}	
 

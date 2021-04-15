@@ -1,4 +1,4 @@
-#include "../include/EnemyAgent.h"
+#include "..\include\EnemyAgent.h"
 #include <stdlib.h>
 #include <iostream>
 #include <utility>
@@ -41,7 +41,7 @@ void EnemyAgent::updatePosition(int newXPos, int newYPos) {
     yPos = newYPos;
 }
 
-void EnemyAgent::getCurrentPosition(int& xRef, int& yRef) {
+void EnemyAgent::getCurrentPosition(int& xRef, int& yRef) const {
     xRef = xPos;
     yRef = yPos;
 }

@@ -1,4 +1,4 @@
-#include "GameController.h"
+#include "..\include\GameController.h"
 #include <iostream>
 #include <stdio.h>
 #include <utility>
@@ -31,7 +31,7 @@ GameController::GameController(std::vector<std::shared_ptr<EnemyAgent>> enemyAge
         int startingYPos = rand() % rowRemainder;
             
         // TODO check enemy agent is not in that position
-        while (!gameModel->isEnemyPositionValid(startingXPos, startingYPos)) {
+        while (!GameController::gameModel->isEnemyPositionValid(startingXPos, startingYPos) && !isPositionPopulated(startingXPos, startingYPos)) {
             startingXPos = rand() % mapCols;
             startingYPos = rand() % rowRemainder;
         }
@@ -52,4 +52,17 @@ GameController::~GameController() {
 
 void GameController::printAgents() {
     
+}
+
+bool GameController::isPositionPopulated(const int xPosToCheck, const int yPosToCheck) {
+
+    int agent_x_pos, agent_y_pos;
+    for (std::vector<std::shared_ptr<EnemyAgent>>::iterator it = enemyAgents.begin(); it != enemyAgents.end(); it++) {
+        const EnemyAgent agent = *it->get();
+        agent.getCurrentPosition(agent_x_pos, agent_y_pos);
+        if (agent_x_pos == xPosToCheck && agent_y_pos == yPosToCheck) {
+            return true;
+        }
+    }
+    return false;
 }

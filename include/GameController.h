@@ -19,6 +19,8 @@ class GameController
         void startGame();
         virtual ~GameController();
         void printAgents();
+
+        bool isPositionPopulated(int, int);
 };
 
 #endif

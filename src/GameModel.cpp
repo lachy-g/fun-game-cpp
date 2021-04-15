@@ -1,4 +1,4 @@
-#include "GameModel.h"
+#include "..\include\GameModel.h"
 
 #include <iostream>
 #include <exception>
@@ -48,19 +48,17 @@ void GameModel::printMap() {
 
     for (int i=0;i<size; i++) {
 
-        if (enemyAgentsPositions.count(i) == 1) {
-            std::cout<<"ENEMY";
+        std::map<int, GameNode>::iterator it = available_game_nodes.find(map[i]);
+
+        if (it == available_game_nodes.end()) {
+            std::cout<<"ERROR";
         } else {
-
-
-            std::map<int, GameNode>::iterator it = available_game_nodes.find(map[i]);
-
-            if (it == available_game_nodes.end()) {
-                std::cout<<"ERROR";
-            } else {
-                std::cout<<it->second.getName();
-            }
+            std::cout<<it->second.getName();
         }
+
+        if (enemyAgentsPositions.count(i) == 1) {
+            std::cout<<"::ENEMY";
+        } 
 
         if (++line_counter == (cols)) {
             std::cout<<"\n";
@@ -114,7 +112,7 @@ int GameModel::map2DTo1D(int row, int col) {
 }
 
 bool GameModel::isEnemyPositionValid(int xpos, int ypos) {
-    const int value = getValue(xpos, ypos);
+    const int value = getValue(ypos, xpos);
     std::map<int, GameNode>::iterator it = available_game_nodes.find(value);
 
     if (it == available_game_nodes.end()) {
