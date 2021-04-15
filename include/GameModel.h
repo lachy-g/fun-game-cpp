@@ -6,7 +6,7 @@
 #include <string>
 #include <set>
 #include <memory>
-
+#include<map>
 #include <iostream>
 
 #ifndef GAMEMODEL_H
@@ -28,13 +28,12 @@ class GameModel
         
         std::vector<int> map;
 
-        std::set<GameNode> available_game_nodes;
+        std::map<int, GameNode> available_game_nodes;
 
         // Refernece to enemy agents //
         std::vector<std::shared_ptr<EnemyAgent>> enemyAgents;
 
         void setValue(int row, int col, int val);
-        int getValue(int row, int col);
 
         // Used to map a 1D coordinate to its 2D representation
         void map1DTo2D(int oneD, int& xPos, int& YPos);
@@ -52,10 +51,16 @@ class GameModel
         const std::vector<int>& getMap();
         void printMap();
         void getMapDimensions(int&, int&);
+        
+        int getValue(int row, int col);
 
         // Used by GameController to provide initialised enemy agents
         // Used at the start, or can be used to provide any additional agents created throughout the program life cycle...
         void provideInitialisedAgents(std::vector<std::shared_ptr<EnemyAgent>> enemyAgents);
+
+        // Returns whether enemy can spawn or move to a position i.e is not blocked or lava
+        // Does not care if an enemy player is currently there. Game controller will handle these interactions.
+        bool isEnemyPositionValid(int xpos, int ypos);
 };
 
 #endif

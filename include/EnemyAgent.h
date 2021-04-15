@@ -34,7 +34,7 @@ class EnemyAgent : public Agent
         /**
          * Returns the current position this agent is in
          */
-        void getCurrentPosition(int&, int&);
+        void getCurrentPosition(int&, int&) const;
 };
 
 #endif

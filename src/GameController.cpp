@@ -1,4 +1,4 @@
-#include "GameController.h"
+#include "..\include\GameController.h"
 #include <iostream>
 #include <stdio.h>
 #include <utility>
@@ -29,6 +29,13 @@ GameController::GameController(std::vector<std::shared_ptr<EnemyAgent>> enemyAge
     for (auto& enemyAgentPtr : GameController::enemyAgents ) {
         int startingXPos = rand() % mapCols;
         int startingYPos = rand() % rowRemainder;
+            
+        // TODO check enemy agent is not in that position
+        while (!GameController::gameModel->isEnemyPositionValid(startingXPos, startingYPos) && !isPositionPopulated(startingXPos, startingYPos)) {
+            startingXPos = rand() % mapCols;
+            startingYPos = rand() % rowRemainder;
+        }
+
         std::cout<<"Spawning Enemy player " << enemyAgentPtr.get()->getUniqueId() << "Spawning at x,y = (" << startingXPos << "," << startingYPos << ")\n";
         enemyAgentPtr.get()->updatePosition(startingXPos, startingYPos);
     }
@@ -47,6 +54,15 @@ void GameController::printAgents() {
     
 }
 
-bool GameController::isEnemyPositionValid(int position) {
-    return true;
+bool GameController::isPositionPopulated(const int xPosToCheck, const int yPosToCheck) {
+
+    int agent_x_pos, agent_y_pos;
+    for (std::vector<std::shared_ptr<EnemyAgent>>::iterator it = enemyAgents.begin(); it != enemyAgents.end(); it++) {
+        const EnemyAgent agent = *it->get();
+        agent.getCurrentPosition(agent_x_pos, agent_y_pos);
+        if (agent_x_pos == xPosToCheck && agent_y_pos == yPosToCheck) {
+            return true;
+        }
+    }
+    return false;
 }

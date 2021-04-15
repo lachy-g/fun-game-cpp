@@ -1,4 +1,4 @@
-#include "GameNode.h"
+#include "..\include\GameNode.h"
 
 GameNode::GameNode(int val) : val(val) {
     switch (val) {

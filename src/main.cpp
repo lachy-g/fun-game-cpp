@@ -7,9 +7,11 @@
 #include <memory>
 #include <utility>
 
-#include "EnemyAgent.h"
-#include "GameModel.h"
-#include "GameController.h"
+#include "../include/EnemyAgent.h"
+#include "../include/GameModel.h"
+#include "../include/GameController.h"
+
+#define STARTING_ENEMIES_DEFAULT 3
 
 std::function<void(std::vector<int>&, int, int)> easyMapGenerator();
 std::function<void(std::vector<int>&, int, int)> hardMapGenerator();
@@ -24,7 +26,7 @@ int main() {
 	
 	std::vector<std::shared_ptr<EnemyAgent>> enemyAgents;
 	// Create the agents
-	for (int i=0; i<2; i++) {
+	for (int i=0; i<STARTING_ENEMIES_DEFAULT; i++) {
 		enemyAgents.push_back(std::make_shared<EnemyAgent>());
 	}	
 
@@ -42,7 +44,7 @@ std::function<void(std::vector<int>&, int, int)> easyMapGenerator() {
 		for (int row = 0; row<rows; row++) {
 			for (int col=0; col<cols; col++) {
 
-				int val = rand() % (AVAILABLE_NODES - 1);
+				int val = rand() % (AVAILABLE_NODES);
 
 				if (row == 0) {
 					map.at(col) = val;
