@@ -44,7 +44,7 @@ std::function<void(std::vector<int>&, int, int)> easyMapGenerator() {
 		for (int row = 0; row<rows; row++) {
 			for (int col=0; col<cols; col++) {
 
-				int val = rand() % (AVAILABLE_NODES - 1);
+				int val = rand() % (AVAILABLE_NODES);
 
 				if (row == 0) {
 					map.at(col) = val;
