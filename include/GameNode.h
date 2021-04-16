@@ -10,12 +10,12 @@
 
 /**
  * Defines the type of node
+ * Each NodeType has a different consquence with respect to an agent moving to it / attempting to move to it
+ * Also each will be displayed differently to the User.
+ * Note that the ordering of these must be preserved
  */
 enum class NodeType {
-            LAVA = 0, 
-            GRASS = 1, 
-            MONEY = 2,
-            BLOCK = 3
+    LAVA, GRASS, MONEY, STONE
 };
 
 /**
@@ -27,14 +27,14 @@ enum class NodeConsequence {
 };
 
 /**
- * TODO break this into a parent with child classes
+ * Class used for consolidationg a NodeType with a consequence.
  */
 class GameNode 
 {
     NodeType nodeType;
     NodeConsequence nodeConsequence;
     std::string name;
-    int val;
+    int nodeTypeEnumOrdinal;
 
     public:
         GameNode(int val);
@@ -58,7 +58,7 @@ class GameNode
         }
 
         bool operator< (const GameNode &toCompare) const {
-            return val < toCompare.val;
+            return nodeTypeEnumOrdinal < toCompare.nodeTypeEnumOrdinal;
         }
 
         static std::string mapConsequenceToString(const NodeConsequence& nodeConsequence) {

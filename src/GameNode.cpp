@@ -1,7 +1,7 @@
 #include "..\include\GameNode.h"
 
-GameNode::GameNode(int val) : val(val) {
-    switch (val) {
+GameNode::GameNode(int val) : nodeTypeEnumOrdinal(val) {
+    switch (nodeTypeEnumOrdinal) {
         case 0:
             nodeType = NodeType::LAVA;
             nodeConsequence = NodeConsequence::DEATH;
@@ -18,9 +18,9 @@ GameNode::GameNode(int val) : val(val) {
             name = "MONEY";
             break;
         case 3:
-            nodeType = NodeType::BLOCK;
+            nodeType = NodeType::STONE;
             nodeConsequence = NodeConsequence::BLOCKED;
-            name = "BLOCK";
+            name = "STONE";
             break;
         default:
             std::cout<<"Illegal argument val "<<val<< " provided\n";

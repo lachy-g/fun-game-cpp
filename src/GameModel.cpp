@@ -73,7 +73,7 @@ void GameModel::printMap() {
 /**
  * Takes row, col at index starting at 0
  */
-void GameModel::setValue(int row, int col, int val) {
+void GameModel::updateMapValue(int row, int col, int val) {
      map.at(map2DTo1D(row, col)) = val;
 }
 

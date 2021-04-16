@@ -16,10 +16,10 @@ AgentType EnemyAgent::getAgentType() {
     return this->agentType;
 }
 
-// Game functions
 int EnemyAgent::getNextMove() {
     if (xPos == UNINITAILISED_POSITION || yPos == UNINITAILISED_POSITION) {
         std::cout<<"Warning, agent has not been initailised, please provide initial position before getting moves\n";
+        // TODO add error reporting
     }
 
     if (moves.empty()) {
@@ -36,7 +36,7 @@ int EnemyAgent::getUniqueId() const {
 }
 
 void EnemyAgent::updatePosition(int newXPos, int newYPos) {
-    std::cout<<"Updating position of enemy with ID "<< uniqueId << " to (" << newXPos << " , " << newYPos << ")\n";
+    std::cout<<"Updating position of enemy agent with ID "<< uniqueId << " to (" << newXPos << " , " << newYPos << ")\n";
     xPos = newXPos;
     yPos = newYPos;
 }
@@ -47,7 +47,7 @@ void EnemyAgent::getCurrentPosition(int& xRef, int& yRef) const {
 }
 
 void EnemyAgent::generateMoves(int turns) {
-    // flush the queue first
+    // flush the queue first 
     while (!moves.empty()) {
         moves.pop();
     }

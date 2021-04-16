@@ -6,6 +6,7 @@
 #define RIGHT 2
 #define DOWN 3
 
+
 enum class AgentType
 {
     ENEMY,
@@ -13,6 +14,10 @@ enum class AgentType
     PLAYER
 };
 
+/**
+ * Base class for agents. Agents are entities that plan their actions independently, or are triggered through user input.
+ * The GameCotroller will facilitate this planning and receive their planned moves for which the model will use to update its UI view with.
+ */
 class Agent 
 {
     protected:
