@@ -20,15 +20,15 @@ int main() {
 	const int rows = 10;
 	const int cols = 10;
 	
-	std::unique_ptr<GameModel> gameModelPtr = std::make_unique<GameModel>(rows, cols, easyMapGenerator());
+	std::unique_ptr<GameBackend::GameModel> gameModelPtr = std::make_unique<GameBackend::GameModel>(rows, cols, GameBackend::easyMapGenerator());
 	
-	std::vector<EnemyAgent*> enemyAgents;
+	std::vector<GameBackend::EnemyAgent*> enemyAgents;
 	// Create the agents
 	for (int i=0; i<STARTING_ENEMIES_DEFAULT; i++) {
-		enemyAgents.push_back(new EnemyAgent());
+		enemyAgents.push_back(new GameBackend::EnemyAgent());
 	}	
 
-	GameController gameController(enemyAgents, std::move(gameModelPtr));
+	GameBackend::GameController gameController(enemyAgents, std::move(gameModelPtr));
 
 	return 0;
 }
