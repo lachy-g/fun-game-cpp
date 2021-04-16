@@ -9,7 +9,7 @@ EnemyAgent::EnemyAgent() : defaultMove(RIGHT), uniqueId(rand()) {
 }
 
 EnemyAgent::~EnemyAgent() {
-
+    std::cout<<"Deleting enemy agent with id " << uniqueId << "\n";
 }
 
 AgentType EnemyAgent::getAgentType() {

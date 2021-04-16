@@ -4,7 +4,6 @@
 #include <functional> 
 #include <vector>
 #include <string>
-#include <set>
 #include <memory>
 #include<map>
 #include <iostream>
@@ -30,8 +29,7 @@ class GameModel
 
         std::map<int, GameNode> available_game_nodes;
 
-        // Refernece to enemy agents //
-        std::vector<std::shared_ptr<EnemyAgent>> enemyAgents;
+        std::vector<EnemyAgent*> enemyAgents;
 
         void setValue(int row, int col, int val);
 
@@ -56,7 +54,7 @@ class GameModel
 
         // Used by GameController to provide initialised enemy agents
         // Used at the start, or can be used to provide any additional agents created throughout the program life cycle...
-        void provideInitialisedAgents(std::vector<std::shared_ptr<EnemyAgent>> enemyAgents);
+        void receiveEnemyAgentsReference(std::vector<EnemyAgent*>& enemyAgents);
 
         // Returns whether enemy can spawn or move to a position i.e is not blocked or lava
         // Does not care if an enemy player is currently there. Game controller will handle these interactions.

@@ -5,14 +5,9 @@
 #include <cmath>
 
 
-GameController::GameController(std::vector<std::shared_ptr<EnemyAgent>> enemyAgents, std::unique_ptr<GameModel> gameModel) : gameModel(std::move(gameModel)) {
+GameController::GameController(std::vector<EnemyAgent*>& enemyAgents, std::unique_ptr<GameModel> gameModel) : gameModel(std::move(gameModel)), enemyAgents(enemyAgents) {
     std::cout<<"Created game controller\n";
     GameController::gameModel->getMapDimensions(mapRows, mapCols);
-
-    // Copy across shared pointers to enemyAgents
-    for (auto enemyAgentPtr : enemyAgents) {
-        GameController::enemyAgents.push_back(std::move(enemyAgentPtr));
-    }
 
     std::cout<<"Retrieved rows "<< mapRows << " and cols " << mapCols << " from game model " << "\n";
 
@@ -36,18 +31,22 @@ GameController::GameController(std::vector<std::shared_ptr<EnemyAgent>> enemyAge
             startingYPos = rand() % rowRemainder;
         }
 
-        std::cout<<"Spawning Enemy player " << enemyAgentPtr.get()->getUniqueId() << "Spawning at x,y = (" << startingXPos << "," << startingYPos << ")\n";
-        enemyAgentPtr.get()->updatePosition(startingXPos, startingYPos);
+        std::cout<<"Spawning Enemy player " << enemyAgentPtr->getUniqueId() << "Spawning at x,y = (" << startingXPos << "," << startingYPos << ")\n";
+        enemyAgentPtr->updatePosition(startingXPos, startingYPos);
     }
 
-    GameController::gameModel.get()->provideInitialisedAgents(GameController::enemyAgents);
+    GameController::gameModel.get()->receiveEnemyAgentsReference(GameController::enemyAgents);
+
+    startGame();
 
     GameController::gameModel.get()->printMap();
 
 }
 
 GameController::~GameController() {
-
+    for (auto enemyAgent : enemyAgents) {
+        delete enemyAgent;
+    }
 }
 
 void GameController::printAgents() {
@@ -57,12 +56,37 @@ void GameController::printAgents() {
 bool GameController::isPositionPopulated(const int xPosToCheck, const int yPosToCheck) {
 
     int agent_x_pos, agent_y_pos;
-    for (std::vector<std::shared_ptr<EnemyAgent>>::iterator it = enemyAgents.begin(); it != enemyAgents.end(); it++) {
-        const EnemyAgent agent = *it->get();
-        agent.getCurrentPosition(agent_x_pos, agent_y_pos);
+    for (auto& it : enemyAgents) {
+        it->getCurrentPosition(agent_x_pos, agent_y_pos);
         if (agent_x_pos == xPosToCheck && agent_y_pos == yPosToCheck) {
             return true;
         }
     }
     return false;
 }
+
+void GameController::startGame() {
+    EnemyAgent* toDelete;
+    int i = 0;
+    for (auto enemyAgent : enemyAgents) {
+        if (i++ == 1) {
+            toDelete = enemyAgent;
+        }
+    }
+    deleteAgent(toDelete);
+}
+
+void GameController::deleteAgent(EnemyAgent* enemyAgent) {
+    // std::set<EnemyAgent*>::iterator it = enemyAgents.find(enemyAgent);
+    // if (it != enemyAgents.end()) {
+    //     delete *it;
+    //     *it = nullptr;
+    // }
+    for (auto& it : enemyAgents) {
+        if (it->getUniqueId() == enemyAgent->getUniqueId()) {
+            delete it;
+            it = nullptr;
+        }
+    }
+}
+

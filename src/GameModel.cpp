@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <cmath>
+#include <set>
 
 /**
  * Takes total rows and cols starting from 1
@@ -39,9 +40,9 @@ void GameModel::printMap() {
     std::set<int> enemyAgentsPositions;
     bool enemyAgentsProvided = !enemyAgents.empty();
     if (enemyAgentsProvided) {
-        for (auto& enemyAgent : enemyAgents) {
+        for (auto enemyAgent : enemyAgents) {
             int x, y;
-            enemyAgent.get()->getCurrentPosition(x, y);
+            enemyAgent->getCurrentPosition(x, y);
             enemyAgentsPositions.insert(map2DTo1D(y, x));
         }
     }
@@ -88,10 +89,8 @@ void GameModel::getMapDimensions(int& r, int& c) {
     c = cols;
 }
 
-void GameModel::provideInitialisedAgents(std::vector<std::shared_ptr<EnemyAgent>> enemyAgents) {
-    for (auto enemyAgentPtr : enemyAgents) {
-        GameModel::enemyAgents.push_back(std::move(enemyAgentPtr));
-    }
+void GameModel::receiveEnemyAgentsReference(std::vector<EnemyAgent*>& enemyAgents) {
+    GameModel::enemyAgents = enemyAgents;
 }
 
 

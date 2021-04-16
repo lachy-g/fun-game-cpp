@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include <utility>
+#include <set>
 
 #include "../include/EnemyAgent.h"
 #include "../include/GameModel.h"
@@ -24,10 +25,10 @@ int main() {
 	
 	std::unique_ptr<GameModel> gameModelPtr = std::make_unique<GameModel>(rows, cols, easyMapGenerator());
 	
-	std::vector<std::shared_ptr<EnemyAgent>> enemyAgents;
+	std::vector<EnemyAgent*> enemyAgents;
 	// Create the agents
 	for (int i=0; i<STARTING_ENEMIES_DEFAULT; i++) {
-		enemyAgents.push_back(std::make_shared<EnemyAgent>());
+		enemyAgents.push_back(new EnemyAgent());
 	}	
 
 	GameController gameController(enemyAgents, std::move(gameModelPtr));

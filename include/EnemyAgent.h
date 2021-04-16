@@ -35,6 +35,14 @@ class EnemyAgent : public Agent
          * Returns the current position this agent is in
          */
         void getCurrentPosition(int&, int&) const;
+
+        bool operator< (const EnemyAgent& agentToCompare) const {
+            return uniqueId < agentToCompare.uniqueId;
+        }
+
+        bool operator== (const EnemyAgent& agentToCompare) const {
+            return uniqueId == agentToCompare.uniqueId;
+        }
 };
 
 #endif
