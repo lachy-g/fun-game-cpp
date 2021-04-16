@@ -4,65 +4,62 @@
 #include <utility>
 #include <cmath>
 
+namespace GameBackend
+{
+    GameController::GameController(std::vector<EnemyAgent*>& enemyAgents, std::unique_ptr<GameModel> gameModel) : gameModel(std::move(gameModel)), enemyAgents(enemyAgents) {
+        GameController::gameModel->getMapDimensions(mapRows, mapCols);
 
-GameController::GameController(std::vector<std::shared_ptr<EnemyAgent>> enemyAgents, std::unique_ptr<GameModel> gameModel) : gameModel(std::move(gameModel)) {
-    std::cout<<"Created game controller\n";
-    GameController::gameModel->getMapDimensions(mapRows, mapCols);
+        std::cout<<"Retrieved rows "<< mapRows << " and cols " << mapCols << " from game model " << "\n";
 
-    // Copy across shared pointers to enemyAgents
-    for (auto enemyAgentPtr : enemyAgents) {
-        GameController::enemyAgents.push_back(std::move(enemyAgentPtr));
-    }
+        // Spawn enemy agents i.e initialise their starting position and provide a referece of the agents to the model
+        // Enemy players can start at any valid node in the top half of the map (in < rows / 2)
+        const std::vector<int> map = GameController::gameModel->getMap();
+        const int rowRemainder = std::floor( mapRows / 2 ) - 1;
+        for (auto& enemyAgentPtr : GameController::enemyAgents ) {
+            int startingXPos = rand() % mapCols;
+            int startingYPos = rand() % rowRemainder;
+                
+            while (!GameController::gameModel->isEnemyPositionValid(startingXPos, startingYPos) && !isEnemyExistAtPosition(startingXPos, startingYPos)) {
+                startingXPos = rand() % mapCols;
+                startingYPos = rand() % rowRemainder;
+            }
 
-    std::cout<<"Retrieved rows "<< mapRows << " and cols " << mapCols << " from game model " << "\n";
-
-    // Initialise player positions
-    // GameController provides to the players their starting position and then notifies the model of this
-    // Enemy players can start at any valid column in top half ( i.e in < rows / 2)
-    const std::vector<int> map = GameController::gameModel->getMap();
-
-    // Ensure we handle both odd and even cases for row division to ensure enemy is not in bottow half
-    const int rowRemainder = std::floor( mapRows / 2 ) - 1;
-    std::cout<<"Spawing enemy players above or in row " << rowRemainder << "\n";
-
-    // TODO ensure spawn positions are valid I.E not lava && ensure they are unique.
-    for (auto& enemyAgentPtr : GameController::enemyAgents ) {
-        int startingXPos = rand() % mapCols;
-        int startingYPos = rand() % rowRemainder;
-            
-        // TODO check enemy agent is not in that position
-        while (!GameController::gameModel->isEnemyPositionValid(startingXPos, startingYPos) && !isPositionPopulated(startingXPos, startingYPos)) {
-            startingXPos = rand() % mapCols;
-            startingYPos = rand() % rowRemainder;
+            std::cout<<"Spawning enemy agent " << enemyAgentPtr->getUniqueId() << " at x,y coordinates (" << startingXPos << "," << startingYPos << ")\n";
+            enemyAgentPtr->updatePosition(startingXPos, startingYPos);
         }
+        GameController::gameModel.get()->receiveEnemyAgentsReference(GameController::enemyAgents);
 
-        std::cout<<"Spawning Enemy player " << enemyAgentPtr.get()->getUniqueId() << "Spawning at x,y = (" << startingXPos << "," << startingYPos << ")\n";
-        enemyAgentPtr.get()->updatePosition(startingXPos, startingYPos);
+        // For debugging
+        GameController::gameModel.get()->printMap();
     }
 
-    GameController::gameModel.get()->provideInitialisedAgents(GameController::enemyAgents);
-
-    GameController::gameModel.get()->printMap();
-
-}
-
-GameController::~GameController() {
-
-}
-
-void GameController::printAgents() {
-    
-}
-
-bool GameController::isPositionPopulated(const int xPosToCheck, const int yPosToCheck) {
-
-    int agent_x_pos, agent_y_pos;
-    for (std::vector<std::shared_ptr<EnemyAgent>>::iterator it = enemyAgents.begin(); it != enemyAgents.end(); it++) {
-        const EnemyAgent agent = *it->get();
-        agent.getCurrentPosition(agent_x_pos, agent_y_pos);
-        if (agent_x_pos == xPosToCheck && agent_y_pos == yPosToCheck) {
-            return true;
+    GameController::~GameController() {
+        for (auto enemyAgent : enemyAgents) {
+            delete enemyAgent;
         }
     }
-    return false;
+
+    bool GameController::isEnemyExistAtPosition(const int xPosToCheck, const int yPosToCheck) {
+        int agent_x_pos, agent_y_pos;
+        for (auto& it : enemyAgents) {
+            it->getCurrentPosition(agent_x_pos, agent_y_pos);
+            if (agent_x_pos == xPosToCheck && agent_y_pos == yPosToCheck) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void GameController::startGame() {
+        
+    }
+
+    void GameController::deleteAgent(EnemyAgent* enemyAgent) {
+        for (auto& it : enemyAgents) {
+            if (it->getUniqueId() == enemyAgent->getUniqueId()) {
+                delete it;
+                it = nullptr;
+            }
+        }
+    }
 }
