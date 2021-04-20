@@ -31,8 +31,6 @@ namespace GameBackend
             it.updatePosition(startingXPos, startingYPos);        
         }
 
-        // GameController::gameModel.get()->receiveEnemyAgentsReference(GameController::enemyAgents);
-
         deleteAgent(GameController::enemyAgents.get()->at(0).getUniqueId());
 
         // For debugging

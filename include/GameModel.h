@@ -34,7 +34,7 @@ namespace GameBackend
             // Used to map int values to the GameNode they represent
             std::map<int, GameNode> available_game_nodes;
 
-            std::vector<EnemyAgent*> enemyAgents;
+            std::shared_ptr<std::vector<GameBackend::EnemyAgent>> enemyAgents;
 
             // Not currently impleted
             void updateMapValue(int row, int col, int val);
@@ -46,7 +46,8 @@ namespace GameBackend
             int map2DTo1D(int row, int col);
 
         public:
-            GameModel(int x, int y, std::function<void(std::vector<int>&, int, int)> generateMap);
+            GameModel(int x, int y, std::function<void(std::vector<int>&, int, int)> generateMap, 
+                      std::shared_ptr<std::vector<GameBackend::EnemyAgent>> enemyAgents);
 
             // There should only be one game model, we don't want to allow it to be copied
             GameModel(const GameModel& gameModel) = delete;
@@ -57,11 +58,7 @@ namespace GameBackend
             void getMapDimensions(int&, int&);
             
             int getValue(int row, int col);
-
-            // Used by GameController to provide initialised enemy agents
-            // Used at the start, or can be used to provide any additional agents created throughout the program life cycle...
-            void receiveEnemyAgentsReference(std::vector<EnemyAgent*>& enemyAgents);
-
+            
             // Returns whether enemy can spawn or move to a position i.e is not blocked or lava
             // Does not care if an enemy player is currently there. Game controller will handle these interactions.
             bool isEnemyPositionValid(int xpos, int ypos);
