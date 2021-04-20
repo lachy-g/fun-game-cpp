@@ -17,13 +17,13 @@ namespace GameBackend
     {
         private:
             // Each agent will have a default move that, if it has no moves planned left will take.
-            const int defaultMove;
+            int defaultMove;
 
             // Agents plan their paths, this stores the moves the agent will take
             std::queue<int> moves;
 
             // Used to identify each agent instance uniquely.
-            const int uniqueId;
+            int uniqueId;
 
             // Start position is provided to agent by GameController
             int xPos = UNINITAILISED_POSITION;
