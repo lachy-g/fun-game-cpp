@@ -1,18 +1,17 @@
 #include "GameModel.h"
 
 #include <iostream>
-#include <exception>
-#include <string>
-#include <sstream>
 #include <cmath>
 #include <set>
+#include <utility>
 
 namespace GameBackend 
 {
     /**
      * Takes total rows and cols starting from 1
      */
-    GameModel::GameModel(int rows, int cols, std::function<void(std::vector<int>&, int, int)> generateMap) : rows(rows), cols(cols), size(rows * cols) {
+    GameModel::GameModel(int rows, int cols, std::function<void(std::vector<int>&, int, int)> generateMap, 
+    std::shared_ptr<std::vector<GameBackend::EnemyAgent>> enemyAgents) : rows(rows), cols(cols), size(rows * cols), enemyAgents(std::move(enemyAgents)) {
     
         // Generate the game nodes
         for (int i=0; i<AVAILABLE_NODES; i++) {
@@ -40,11 +39,11 @@ namespace GameBackend
 
         // Temporarily display enemy agents on map for debugging, later will need to improve this..
         std::set<int> enemyAgentsPositions;
-        bool enemyAgentsProvided = !enemyAgents.empty();
+        bool enemyAgentsProvided = !enemyAgents.get()->empty();
         if (enemyAgentsProvided) {
-            for (auto enemyAgent : enemyAgents) {
+            for (auto& enemyAgent : *enemyAgents.get()) {
                 int x, y;
-                enemyAgent->getCurrentPosition(x, y);
+                enemyAgent.getCurrentPosition(x, y);
                 enemyAgentsPositions.insert(map2DTo1D(y, x));
             }
         }
@@ -89,10 +88,6 @@ namespace GameBackend
     void GameModel::getMapDimensions(int& r, int& c) {
         r = rows;
         c = cols;
-    }
-
-    void GameModel::receiveEnemyAgentsReference(std::vector<EnemyAgent*>& enemyAgents) {
-        GameModel::enemyAgents = enemyAgents;
     }
 
 
