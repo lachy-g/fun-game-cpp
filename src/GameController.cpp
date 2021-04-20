@@ -3,10 +3,12 @@
 #include <stdio.h>
 #include <utility>
 #include <cmath>
+#include <algorithm>
 
 namespace GameBackend
 {
-    GameController::GameController(std::vector<EnemyAgent*>& enemyAgents, std::unique_ptr<GameModel> gameModel) : gameModel(std::move(gameModel)), enemyAgents(enemyAgents) {
+    GameController::GameController(std::shared_ptr<std::vector<GameBackend::EnemyAgent>> enemyAgents, std::unique_ptr<GameModel> gameModel) : 
+                                    gameModel(std::move(gameModel)), enemyAgents(std::move(enemyAgents)) {
         GameController::gameModel->getMapDimensions(mapRows, mapCols);
 
         std::cout<<"Retrieved rows "<< mapRows << " and cols " << mapCols << " from game model " << "\n";
@@ -15,7 +17,8 @@ namespace GameBackend
         // Enemy players can start at any valid node in the top half of the map (in < rows / 2)
         const std::vector<int> map = GameController::gameModel->getMap();
         const int rowRemainder = std::floor( mapRows / 2 ) - 1;
-        for (auto& enemyAgentPtr : GameController::enemyAgents ) {
+
+        for (auto& it : *GameController::enemyAgents.get()) {
             int startingXPos = rand() % mapCols;
             int startingYPos = rand() % rowRemainder;
                 
@@ -24,25 +27,25 @@ namespace GameBackend
                 startingYPos = rand() % rowRemainder;
             }
 
-            std::cout<<"Spawning enemy agent " << enemyAgentPtr->getUniqueId() << " at x,y coordinates (" << startingXPos << "," << startingYPos << ")\n";
-            enemyAgentPtr->updatePosition(startingXPos, startingYPos);
+            std::cout<<"Spawning enemy agent " << it.getUniqueId() << " at x,y coordinates (" << startingXPos << "," << startingYPos << ")\n";
+            it.updatePosition(startingXPos, startingYPos);        
         }
-        GameController::gameModel.get()->receiveEnemyAgentsReference(GameController::enemyAgents);
+
+        // GameController::gameModel.get()->receiveEnemyAgentsReference(GameController::enemyAgents);
+
+        deleteAgent(GameController::enemyAgents.get()->at(0).getUniqueId());
 
         // For debugging
         GameController::gameModel.get()->printMap();
     }
 
     GameController::~GameController() {
-        for (auto enemyAgent : enemyAgents) {
-            delete enemyAgent;
-        }
     }
 
     bool GameController::isEnemyExistAtPosition(const int xPosToCheck, const int yPosToCheck) {
         int agent_x_pos, agent_y_pos;
-        for (auto& it : enemyAgents) {
-            it->getCurrentPosition(agent_x_pos, agent_y_pos);
+        for (auto& it : *enemyAgents.get()) {
+            it.getCurrentPosition(agent_x_pos, agent_y_pos);
             if (agent_x_pos == xPosToCheck && agent_y_pos == yPosToCheck) {
                 return true;
             }
@@ -54,12 +57,9 @@ namespace GameBackend
         
     }
 
-    void GameController::deleteAgent(EnemyAgent* enemyAgent) {
-        for (auto& it : enemyAgents) {
-            if (it->getUniqueId() == enemyAgent->getUniqueId()) {
-                delete it;
-                it = nullptr;
-            }
-        }
+    void GameController::deleteAgent(const int uniqueIdToDelete) {
+        enemyAgents.get()->erase(std::remove_if(enemyAgents.get()->begin(), enemyAgents.get()->end(), 
+                                [uniqueIdToDelete] (EnemyAgent& enemyAgent) -> bool { return enemyAgent.getUniqueId() == uniqueIdToDelete; }),
+                                enemyAgents.get()->end());
     }
 }

@@ -15,7 +15,7 @@ namespace GameBackend
     class GameController
     {
         private:
-            std::vector<EnemyAgent*> enemyAgents;
+            std::shared_ptr<std::vector<GameBackend::EnemyAgent>> enemyAgents;
             std::unique_ptr<GameModel> gameModel;
 
             // Store the map dimensions here for convenience
@@ -30,10 +30,10 @@ namespace GameBackend
             /**
              * When an agent dies, it will delete the underlying instance ensuring the model does not display the agent
              */
-            void deleteAgent(EnemyAgent* enemyAgent);
+            void deleteAgent(int uniqueIdOfAgentToDelete);
 
         public:
-            GameController(std::vector<EnemyAgent*>& enemyAgents, std::unique_ptr<GameModel> gameModel);
+            GameController(std::shared_ptr<std::vector<GameBackend::EnemyAgent>> enemyAgents, std::unique_ptr<GameModel> gameModel);
 
             // Currently we only ever want one game controller
             GameController(const GameController& gameController) = delete;
