@@ -8,10 +8,10 @@
 #include <utility>
 #include <set>
 
-#include "../include/EnemyAgent.h"
-#include "../include/GameModel.h"
-#include "../include/GameController.h"
-#include "../include/MapGenerator.h"
+#include "EnemyAgent.h"
+#include "GameModel.h"
+#include "GameController.h"
+#include "MapGenerator.h"
 
 #define STARTING_ENEMIES_DEFAULT 3
 

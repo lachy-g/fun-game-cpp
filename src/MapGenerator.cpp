@@ -1,5 +1,5 @@
-#include "..\include\MapGenerator.h"
-#include "..\include\GameNode.h"
+#include "MapGenerator.h"
+#include "GameNode.h"
 
 namespace GameBackend
 {

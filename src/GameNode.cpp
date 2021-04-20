@@ -1,4 +1,4 @@
-#include "..\include\GameNode.h"
+#include "GameNode.h"
 
 namespace GameBackend
 {
